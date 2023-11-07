@@ -1,4 +1,8 @@
 import { useState } from "react";
+import Input from "./components/Input";
+import Todos from "./components/Todos";
+import Button from "./components/Button";
+// import Input from "./components"
 
 function App() {
 	// State to hold the current text input value
@@ -21,7 +25,13 @@ function App() {
 				setTodos(newTodos);
 				setEditingIndex(null); // Reset editing index after updating
 			} else {
-				// If adding mode
+				// If it's new task
+
+				// If the key and the value are the same we can just add the var "text"
+				// {
+				// 	text: text,
+				// 	completed:true
+				// }
 				setTodos([{ text, completed: false }, ...todos]);
 			}
 			setText(""); // Clear the input field
@@ -56,8 +66,8 @@ function App() {
 	// AKA Update receive MouseEvent
 	const handleEdit = (index, text) => {
 		// copy current todos
-		setText(text);
 		setEditingIndex(index);
+		setText(text);
 	};
 
 	// mark todo completed
@@ -79,52 +89,20 @@ function App() {
 		<div className="h-[100vh] border-2 bg-purple-500 flex justify-center items-center">
 			<div className="w-[500px] ">
 				<div className="flex mb-10 max-w-full gap-2 py-5 px-7 bg-white rounded-md">
-					<input
-						onChange={(e) => setText(e.target.value)}
-						value={text}
-						className="input flex-1"
-						type="text"
-						placeholder="Enter todo"
-						onKeyDown={handleKeyDown}
+					<Input
+						text={text}
+						setText={setText}
+						handleKeyDown={handleKeyDown}
 					/>
-					<button
-						onClick={handleAddOrUpdate}
-						className="btn btn-primary"
-					>
-						{/* if there is a editingIndex show Save otherwise show Add */}
-						{editingIndex ? "Save" : "Add"}
-					</button>
+					<Button text={editingIndex != null ? "Save" : "Add"} handleOnClick={handleAddOrUpdate} />
 				</div>
 
-				<div className="w-full flex gap-2 flex-col max-h-[700px]">
-					{todos.map((todo, index) => (
-						<div
-							key={index}
-							className="bg-white p-5 rounded-md flex gap-2 items-center"
-						>
-							<p
-								className={`flex-1 cursor-pointer ${
-									todo.completed && "line-through"
-								}`}
-								onClick={() => handleCompleted(index)}
-							>
-								{todo.text}
-							</p>
-							<button
-								onClick={() => handleEdit(index, todo.text)}
-								className="btn btn-accent"
-							>
-								Edit
-							</button>
-							<button
-								onClick={() => handleDelete(index)}
-								className="btn btn-error"
-							>
-								Delete
-							</button>
-						</div>
-					))}
-				</div>
+				<Todos
+					todos={todos}
+					handleDelete={handleDelete}
+					handleEdit={handleEdit}
+					handleCompleted={handleCompleted}
+				/>
 			</div>
 		</div>
 	);
