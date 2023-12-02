@@ -1,8 +1,11 @@
-import React from 'react'
+import { useContext } from "react";
+import AppContext from "../contextAPI/AppProvider";
 
 // eslint-disable-next-line react/prop-types
-function AddTodo({text, setText, handleKeyDown, handleAddOrUpdate, editingId}) {
-  return (
+function AddTodo() {
+	const { text, setText, handleKeyDown, handleAddOrUpdate, editingId } =
+		useContext(AppContext);
+	return (
 		<div className="flex mb-10 max-w-full gap-2 py-5 px-7 bg-white rounded-md">
 			<input
 				onChange={(e) => setText(e.target.value)}
@@ -17,7 +20,7 @@ function AddTodo({text, setText, handleKeyDown, handleAddOrUpdate, editingId}) {
 				{editingId ? "Save" : "Add"}
 			</button>
 		</div>
-  );
+	);
 }
 
-export default AddTodo
+export default AddTodo;
