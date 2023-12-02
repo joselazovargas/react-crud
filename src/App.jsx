@@ -107,9 +107,5 @@ function App() {
 export default App;
 
 /*
-	Configure .env 
-	Take out all firebase related functions to a new file called BackendQueries
-	seperate to components
-	Push to firebasebranch
 	Implement auth in new branch
 */
