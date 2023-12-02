@@ -24,5 +24,14 @@ function App() {
 export default App;
 
 /*
-	Implement auth in new branch
+	- Routing
+		- React Router
+		- Protect the routes
+	- Sign up
+		- Add extra fields to user, ie: IG URL
+	- Storage
+		- Upload an image
+		- Link content with user
+	- Testing
+	
 */
