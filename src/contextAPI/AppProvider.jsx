@@ -4,10 +4,12 @@ import {
 	deleteTodo,
 	getTodos,
 	loginUser,
+	logoutUser,
 	markTodoComplete,
 	registerUser,
 	updateTodo,
 } from "../backend/Queries";
+import { useNavigate } from "react-router-dom";
 
 // creating context
 const AppContext = createContext();
@@ -21,6 +23,7 @@ const AppContextProvider = ({ children }) => {
 	// State to hold the current text input value
 	const [text, setText] = useState("");
 	const [user, setUser] = useState(null);
+	const goTo = useNavigate()
 
 	const handleKeyDown = (event) => {
 		// If the key pressed is Enter
@@ -94,13 +97,22 @@ const AppContextProvider = ({ children }) => {
 
 	// register use
 	const register = (email, password) => {
-		registerUser(email, password, setUser);
+		auth(email, password, registerUser)
 	};
 
 	// register use
 	const login = (email, password) => {
-		loginUser(email, password, setUser);
+		auth(email, password, loginUser)
 	};
+
+	// auth function for register and login
+	const auth = (email, password, fn) => {
+		fn(email, password, setUser, goTo)
+	}
+
+	const logout = () => {
+		logoutUser(setUser,goTo)
+	}
 
 	return (
 		<AppContext.Provider
@@ -116,6 +128,7 @@ const AppContextProvider = ({ children }) => {
 				handleKeyDown,
 				register,
 				login,
+				logout
 			}}
 		>
 			{children}
