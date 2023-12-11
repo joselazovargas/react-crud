@@ -39,5 +39,4 @@ export default App;
 		- Link content with user
 	- Testing
 	- Loading state for content queries - skeleton effect
-	
 */

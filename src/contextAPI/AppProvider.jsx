@@ -33,23 +33,13 @@ const AppContextProvider = ({ children }) => {
 		}
 	};
 
-	// perform actions at specific stages of the component life cycle
-	// useEffect(() => {
-	// 	// called the first time the component is rendered
-	// 	// called every time state changes
-	// 	console.log("everytime")
-	// })
 	useEffect(() => {
-		// called the first time the component is rendered
-		// best for api calls
-		getTodos(setTodos);
-	}, []);
-
-	// useEffect(() => {
-	// 	// called the first time the component is rendered
-	// 	// called when todos and editingId changes
-	// 	console.log("todos and editingId changes")
-	// },[todos, editingId])
+		if(user) getTodos(setTodos);
+		// adding user dependency to update todos
+		// every time a new user logs in
+		// otherwise it will show the previous todos
+		// until the new user refreshes the page
+	}, [user]);
 
 	// Function to handle adding a new todo or updating an existing one
 	const handleAddOrUpdate = async () => {
@@ -111,7 +101,7 @@ const AppContextProvider = ({ children }) => {
 	}
 
 	const logout = () => {
-		logoutUser(setUser,goTo)
+		logoutUser(setUser,goTo, setTodos)
 	}
 
 	return (

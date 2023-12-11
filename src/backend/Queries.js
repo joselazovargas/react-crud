@@ -6,9 +6,10 @@ import { getDoc } from 'firebase/firestore';
 const todosCollection = "todos"
 
 export const getTodos = async (setTodos) => {
-	// TODO onSnapshot monitor a collection in this case "todos"
+	
 	const q = query(collection(db, todosCollection), where("userId","==",getStoredUser().id));
 
+	// DONE onSnapshot monitor a collection in this case "todos"
 	await onSnapshot(q, querySnapshot => {
 		const queryTodos = [];
 		querySnapshot.forEach(doc => {
@@ -130,12 +131,17 @@ export const loginUser = (email, password, setUser, goTo) => {
 		})
 }
 
-export const logoutUser = (setUser,goTo) => {
+export const logoutUser = (setUser,goTo, setTodos) => {
 	signOut(auth)
 		// when the result is successful
 		.then(() => {
 			// update state
 			setUser(null);
+			// Clearing to dos so the next logged user
+			// won't see the previous one
+			// otherwise it will be shown for a second
+			// before updating
+			setTodos([])
 			// remove user from storage
 			localStorage.removeItem("todo-user");
 			// go to login page
@@ -185,6 +191,6 @@ const updateUserColl = async (id) => {
 
 }
 
-const getStoredUser = () => {
+export const getStoredUser = () => {
 	return JSON.parse(localStorage.getItem("todo-user"))
 }
