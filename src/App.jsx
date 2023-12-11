@@ -1,37 +1,41 @@
-import { Todos } from "./components/Todos";
-import AddTodo from "./components/AddTodo";
 import { AppContextProvider } from "./contextAPI/AppProvider";
-import Login from "./components/Login";
+import Login from "./pages/Login";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import TodosHomePage from "./pages/TodosHomePage";
 
 function App() {
 	return (
-		<AppContextProvider>
-			<div className="h-[100vh] border-2 bg-purple-500 flex justify-center items-center">
-				{/* TODO:implement routing */}
-				{/* <div className="w-[500px] ">
-					<AddTodo />
-
-					<div className="w-full flex gap-2 flex-col max-h-[700px]">
-						<Todos />
-					</div>
-				</div> */}
-				<Login />
-			</div>
-		</AppContextProvider>
+		<BrowserRouter>
+			<AppContextProvider>
+				<div className="h-[100vh] border-2 bg-purple-500 flex justify-center items-center">
+					<Routes>
+						<Route index element={<Login />} />
+						<Route
+							path="/todos"
+							element={<TodosHomePage />}
+						/>
+						<Route path="*" element={<Navigate to="/" />} />
+					</Routes>
+				</div>
+			</AppContextProvider>
+		</BrowserRouter>
 	);
 }
 
 export default App;
 
 /*
+	DONE:
 	- Routing
 		- React Router
 		- Protect the routes
+	TODO:
 	- Sign up
 		- Add extra fields to user, ie: IG URL
 	- Storage
 		- Upload an image
 		- Link content with user
 	- Testing
+	- Loading state for content queries - skeleton effect
 	
 */

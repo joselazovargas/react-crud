@@ -1,15 +1,14 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import Todo from "./Todo";
 import AppContext from "../contextAPI/AppProvider";
 
 // eslint-disable-next-line react/prop-types
-export const Todos = () => {
+const Todos = () => {
 	const { todos, handleCompleted, handleEdit, handleDelete } =
 		useContext(AppContext);
 
 	return (
 		<>
-			{name}
 			{/* eslint-disable-next-line react/prop-types */}
 			{todos.map((todo) => (
 				<Todo
@@ -23,3 +22,5 @@ export const Todos = () => {
 		</>
 	);
 };
+
+export default Todos

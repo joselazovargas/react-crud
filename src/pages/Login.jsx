@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AppContext from "../contextAPI/AppProvider";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function Login() {
@@ -8,6 +9,12 @@ function Login() {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isLogin, setIsLogin] = useState(true);
 	const { register, login } = useContext(AppContext);
+	const goTo = useNavigate()
+
+	useEffect(() => {
+		const usr = JSON.parse(localStorage.getItem("todo-user"))
+		if(usr) goTo("/todos")
+	},[])
 
 	const handleRegister = () => {
 		if (!email || !password) return alert("feilds must be filled!");
