@@ -32,6 +32,8 @@ export default App;
 	TODO:
 	- Sign up
 		- Add extra fields to user, ie: IG URL
+	TODO:BUG: when i login to a different user, after a previous login, refresh the todos on page
+	- Shared to dos, google drive style
 	- Storage
 		- Upload an image
 		- Link content with user
