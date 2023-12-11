@@ -96,8 +96,8 @@ const AppContextProvider = ({ children }) => {
 	};
 
 	// register use
-	const register = (email, password) => {
-		auth(email, password, registerUser)
+	const register = (email, password, imageUrl, socialUrl, nickname) => {
+		auth(email, password, registerUser, imageUrl, socialUrl, nickname);
 	};
 
 	// register use
@@ -106,8 +106,8 @@ const AppContextProvider = ({ children }) => {
 	};
 
 	// auth function for register and login
-	const auth = (email, password, fn) => {
-		fn(email, password, setUser, goTo)
+	const auth = (email, password, fn, ...rest) => {
+		fn(email, password, setUser, goTo, ...rest)
 	}
 
 	const logout = () => {

@@ -7,6 +7,9 @@ function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
+	const [imageUrl, setImageUrl] = useState("");
+	const [socialUrl, setSocialUrl] = useState("");
+	const [nickname, setNickname] = useState("");
 	const [isLogin, setIsLogin] = useState(true);
 	const { register, login } = useContext(AppContext);
 	const goTo = useNavigate()
@@ -21,7 +24,7 @@ function Login() {
 
 		if (password !== confirmPassword) return alert("Passwords must match!");
 
-		register(email, password);
+		register(email, password, imageUrl, socialUrl, nickname);
 		reset();
 	};
 
@@ -43,7 +46,7 @@ function Login() {
 				onChange={(e) => setEmail(e.target.value)}
 				value={email}
 				className="input flex-1 p-5"
-				type="text"
+				type="email"
 				placeholder="Enter email"
 			/>
 			<input
@@ -54,13 +57,36 @@ function Login() {
 				placeholder="Enter Password"
 			/>
 			{!isLogin && (
-				<input
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					value={confirmPassword}
-					className="input flex-1 p-5"
-					type="password"
-					placeholder="Confirm Password"
-				/>
+				<>
+					<input
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						value={confirmPassword}
+						className="input flex-1 p-5"
+						type="password"
+						placeholder="Confirm Password"
+					/>
+					<input
+						onChange={(e) => setImageUrl(e.target.value)}
+						value={imageUrl}
+						className="input flex-1 p-5"
+						type="text"
+						placeholder="Enter image Url"
+					/>
+					<input
+						onChange={(e) => setSocialUrl(e.target.value)}
+						value={socialUrl}
+						className="input flex-1 p-5"
+						type="text"
+						placeholder="Enter social Url"
+					/>
+					<input
+						onChange={(e) => setNickname(e.target.value)}
+						value={nickname}
+						className="input flex-1 p-5"
+						type="text"
+						placeholder="Enter nickname"
+					/>
+				</>
 			)}
 
 			<button
