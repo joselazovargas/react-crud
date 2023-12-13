@@ -1,5 +1,17 @@
 import React from 'react'
 
+/*
+
+alternative method
+
+function Todo(props) {
+	return (
+		<p>props.todo.text</p>
+		)
+	}
+*/
+
+
 // eslint-disable-next-line react/prop-types
 function Todo({todo, handleCompleted, handleEdit, handleDelete }) {
 	return (
