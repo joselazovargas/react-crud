@@ -6,8 +6,8 @@ import { getDoc } from 'firebase/firestore';
 const todosCollection = "todos"
 
 export const getTodos = async (setTodos) => {
-	
-	const q = query(collection(db, todosCollection), where("userId","==",getStoredUser().id));
+
+	const q = query(collection(db, todosCollection), where("userId", "==", getStoredUser().id));
 
 	// DONE onSnapshot monitor a collection in this case "todos"
 	await onSnapshot(q, querySnapshot => {
@@ -23,6 +23,21 @@ export const getTodos = async (setTodos) => {
 		setTodos(queryTodos)
 	})
 
+}
+
+// eslint-disable-next-line no-unused-vars
+export const getSingleTodo = async (id, setTodoDetail) => {
+
+	// This will get the docRef that we need in order to get the content
+	const ref = doc(db, todosCollection, id)
+
+	// Here's where we get the content
+	const todoSnap = await getDoc(ref)
+	if (todoSnap.exists()) {
+		setTodoDetail(todoSnap.data())
+	} else {
+		console.log("Todo Detail not found")
+	}
 }
 
 
@@ -74,8 +89,8 @@ export const registerUser = (email, password, setUser, goTo, img, social, nick) 
 			const { user } = userCred
 
 			// adding user to users collection  for more field
-			const moreUsrInfo = await createUserColl(user.uid, img,social,nick)
-			const {imageUrl, socialUrl, nickname, createdAt} =  moreUsrInfo
+			const moreUsrInfo = await createUserColl(user.uid, img, social, nick)
+			const { imageUrl, socialUrl, nickname, createdAt } = moreUsrInfo
 
 			const usr = {
 				id: user.uid,
@@ -103,9 +118,9 @@ export const loginUser = (email, password, setUser, goTo) => {
 	signInWithEmailAndPassword(auth, email, password)
 		.then(async ({ user }) => {
 			// get user other info 
-			const  moreUsrInfo = await updateUserColl(user.uid)
-			const {imageUrl, socialUrl, nickname, createdAt, updatedAt} = moreUsrInfo
-			
+			const moreUsrInfo = await updateUserColl(user.uid)
+			const { imageUrl, socialUrl, nickname, createdAt, updatedAt } = moreUsrInfo
+
 			// add new properties to user object
 			const usr = {
 				id: user.uid,
@@ -131,7 +146,7 @@ export const loginUser = (email, password, setUser, goTo) => {
 		})
 }
 
-export const logoutUser = (setUser,goTo, setTodos) => {
+export const logoutUser = (setUser, goTo, setTodos) => {
 	signOut(auth)
 		// when the result is successful
 		.then(() => {
@@ -159,14 +174,14 @@ const createUserColl = async (id, imageUrl, socialUrl, nickname) => {
 		imageUrl,
 		socialUrl,
 		nickname,
-		createdAt:serverTimestamp(),
+		createdAt: serverTimestamp(),
 	})
 
 	const usr = await getDoc(doc(db, "users", id))
 
-	if(usr.exists()){
+	if (usr.exists()) {
 		const { imageUrl, socialUrl, nickname, createdAt } = usr.data()
-		return {imageUrl,socialUrl,nickname, createdAt}
+		return { imageUrl, socialUrl, nickname, createdAt }
 	}
 	else {
 		return null

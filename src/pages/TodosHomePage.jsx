@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AddTodo from "../components/AddTodo";
 import Todos from "../components/Todos";
-import {getStoredUser} from "../backend/Queries";
+import { getStoredUser } from "../backend/Queries";
 
 const TodosHomePage = () => {
 	const goTo = useNavigate();
@@ -12,13 +12,15 @@ const TodosHomePage = () => {
 
 	useEffect(() => {
 		if (!user) goTo("/");
-	}, []);
+	}, [user]);
+
+	if (!user) return goTo("/");
 
 	return (
 		<div className="w-[500px] ">
 			{/* This and the next line do the same */}
 			{/* <h1>{user.nickname ? user.nickname : user.email  }</h1> */}
-			<h1>{user.nickname || user.email }</h1>
+			<h1>{user.nickname || user.email}</h1>
 			<AddTodo />
 
 			<div className="w-full flex gap-2 flex-col max-h-[700px]">

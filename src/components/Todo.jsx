@@ -1,4 +1,5 @@
-import React from 'react'
+import React from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 /*
 
@@ -11,9 +12,17 @@ function Todo(props) {
 	}
 */
 
-
 // eslint-disable-next-line react/prop-types
-function Todo({todo, handleCompleted, handleEdit, handleDelete }) {
+function Todo({ todo, handleCompleted, handleEdit, handleDelete }) {
+	const goTo = useNavigate();
+
+	const handleView = () => {
+		// eslint-disable-next-line react/prop-types
+		console.log(todo.id);
+		// eslint-disable-next-line react/prop-types
+		goTo("/todos/" + todo.id);
+	};
+
 	return (
 		<div className="bg-white p-5 rounded-md flex gap-2 items-center">
 			<p
@@ -27,6 +36,9 @@ function Todo({todo, handleCompleted, handleEdit, handleDelete }) {
 				{/* eslint-disable-next-line react/prop-types */}
 				{todo.text}
 			</p>
+			<button onClick={() => handleView()} className="btn btn-accent">
+				View
+			</button>
 			<button onClick={() => handleEdit(todo)} className="btn btn-accent">
 				Edit
 			</button>
@@ -41,4 +53,4 @@ function Todo({todo, handleCompleted, handleEdit, handleDelete }) {
 	);
 }
 
-export default Todo
+export default Todo;

@@ -2,6 +2,8 @@ import { createContext, useEffect, useState } from "react";
 import {
 	addTodo,
 	deleteTodo,
+	getSingleTodo,
+	getStoredUser,
 	getTodos,
 	loginUser,
 	logoutUser,
@@ -22,8 +24,11 @@ const AppContextProvider = ({ children }) => {
 	const [editingId, setEditingId] = useState(null);
 	// State to hold the current text input value
 	const [text, setText] = useState("");
-	const [user, setUser] = useState(null);
-	const goTo = useNavigate()
+	const storedUsr = getStoredUser();
+	const [todoDetail, setTodoDetail] = useState(null);
+
+	const [user, setUser] = useState(storedUsr || null);
+	const goTo = useNavigate();
 
 	const handleKeyDown = (event) => {
 		// If the key pressed is Enter
@@ -34,7 +39,9 @@ const AppContextProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		if(user) getTodos(setTodos);
+		if (user) {
+			getTodos(setTodos);
+		}
 		// adding user dependency to update todos
 		// every time a new user logs in
 		// otherwise it will show the previous todos
@@ -92,17 +99,23 @@ const AppContextProvider = ({ children }) => {
 
 	// register use
 	const login = (email, password) => {
-		auth(email, password, loginUser)
+		auth(email, password, loginUser);
 	};
 
 	// auth function for register and login
 	const auth = (email, password, fn, ...rest) => {
-		fn(email, password, setUser, goTo, ...rest)
-	}
+		fn(email, password, setUser, goTo, ...rest);
+	};
 
 	const logout = () => {
-		logoutUser(setUser,goTo, setTodos)
-	}
+		logoutUser(setUser, goTo, setTodos);
+	};
+
+	const getTodo = (id) => {
+		// get single todo, the find() will return the item that passes the condition
+		getSingleTodo(id, setTodoDetail);
+		// const todo = todos.find((todoItem) => todoItem.id === id);
+	};
 
 	return (
 		<AppContext.Provider
@@ -110,6 +123,7 @@ const AppContextProvider = ({ children }) => {
 				user,
 				text,
 				todos,
+				todoDetail,
 				setText,
 				handleAddOrUpdate,
 				handleDelete,
@@ -118,7 +132,8 @@ const AppContextProvider = ({ children }) => {
 				handleKeyDown,
 				register,
 				login,
-				logout
+				logout,
+				getTodo,
 			}}
 		>
 			{children}

@@ -12,12 +12,12 @@ function Login() {
 	const [nickname, setNickname] = useState("");
 	const [isLogin, setIsLogin] = useState(true);
 	const { register, login } = useContext(AppContext);
-	const goTo = useNavigate()
+	const goTo = useNavigate();
 
 	useEffect(() => {
-		const usr = JSON.parse(localStorage.getItem("todo-user"))
-		if(usr) goTo("/todos")
-	},[])
+		const usr = JSON.parse(localStorage.getItem("todo-user"));
+		if (usr) goTo("/todos");
+	}, []);
 
 	const handleRegister = () => {
 		if (!email || !password) return alert("feilds must be filled!");

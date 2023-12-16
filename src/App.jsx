@@ -1,5 +1,6 @@
 import { AppContextProvider } from "./contextAPI/AppProvider";
 import Login from "./pages/Login";
+import TodoDetail from "./pages/TodoDetail";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import TodosHomePage from "./pages/TodosHomePage";
 
@@ -10,10 +11,8 @@ function App() {
 				<div className="h-[100vh] border-2 bg-purple-500 flex justify-center items-center">
 					<Routes>
 						<Route index element={<Login />} />
-						<Route
-							path="/todos"
-							element={<TodosHomePage />}
-						/>
+						<Route path="/todos" element={<TodosHomePage />} />
+						<Route path="/todos/:id" element={<TodoDetail />} />
 						<Route path="*" element={<Navigate to="/" />} />
 					</Routes>
 				</div>
@@ -44,8 +43,8 @@ export default App;
 	- How to manage a projects from the start
 */
 
-[
-	{id:1, isOwner:true, permission:["view","edit","delete","update"]},
-	{id:2,permissions:["view", "edit", "delete", "update"]},
-	{id:2, permissions:["view", "edit"]}
-]
+// [
+// 	{id:1, isOwner:true, permission:["view","edit","delete"]},
+// 	{id:2,permissions:["view", "edit", "delete", "update"]},
+// 	{id:2, permissions:["view", "edit"]}
+// ]
