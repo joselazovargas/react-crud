@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import Todo from "./Todo";
 import AppContext from "../contextAPI/AppProvider";
 
@@ -6,11 +6,16 @@ import AppContext from "../contextAPI/AppProvider";
 const Todos = () => {
 	const { todos, handleCompleted, handleEdit, handleDelete } =
 		useContext(AppContext);
+	const [t, setT] = useState([]);
+	console.log(todos);
+	useEffect(() => {
+		setT(todos);
+	}, [todos]);
 
 	return (
 		<>
 			{/* eslint-disable-next-line react/prop-types */}
-			{todos.map((todo) => (
+			{t.map((todo) => (
 				<Todo
 					todo={todo}
 					key={todo.id}
@@ -23,4 +28,4 @@ const Todos = () => {
 	);
 };
 
-export default Todos
+export default Todos;

@@ -42,7 +42,10 @@ export default App;
 	- Planning and visual representation of a system
 	- How to manage a projects from the start
 */
-
+// TODO:BUG -> images don't show at on page load, but show after
+// FIXED: There was an unintentional delay while loading the todo's images
+// This was fixed by creating separete async functions, one for
+// getting the todos, another one for just getting the images.
 // [
 // 	{id:1, isOwner:true, permission:["view","edit","delete"]},
 // 	{id:2,permissions:["view", "edit", "delete", "update"]},

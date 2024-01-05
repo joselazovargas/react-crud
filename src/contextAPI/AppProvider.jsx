@@ -3,6 +3,7 @@ import {
 	addTodo,
 	deleteTodo,
 	getSingleTodo,
+	getSingleTodoImage,
 	getStoredUser,
 	getTodos,
 	loginUser,
@@ -49,7 +50,7 @@ const AppContextProvider = ({ children }) => {
 	}, [user]);
 
 	// Function to handle adding a new todo or updating an existing one
-	const handleAddOrUpdate = async () => {
+	const handleAddOrUpdate = async (img) => {
 		// Execute code if 'text' input is not empty and not just whitespace
 		if (text.trim()) {
 			if (editingId !== null) {
@@ -62,7 +63,7 @@ const AppContextProvider = ({ children }) => {
 				setEditingId(null); // Reset editing index after updating
 			} else {
 				// ADD TODO
-				await addTodo(text);
+				await addTodo(text, img);
 			}
 			setText(""); // Clear the input field
 		}
@@ -117,6 +118,10 @@ const AppContextProvider = ({ children }) => {
 		// const todo = todos.find((todoItem) => todoItem.id === id);
 	};
 
+	const getImg = async (id, setImg) => {
+		await getSingleTodoImage(id, setImg);
+	};
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -134,6 +139,7 @@ const AppContextProvider = ({ children }) => {
 				login,
 				logout,
 				getTodo,
+				getImg,
 			}}
 		>
 			{children}

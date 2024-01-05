@@ -1,7 +1,8 @@
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
-import { auth, db } from "./Firebase";
+import { auth, db, storage } from "./Firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { getDoc } from 'firebase/firestore';
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 
 const todosCollection = "todos"
 
@@ -12,7 +13,8 @@ export const getTodos = async (setTodos) => {
 	// DONE onSnapshot monitor a collection in this case "todos"
 	await onSnapshot(q, querySnapshot => {
 		const queryTodos = [];
-		querySnapshot.forEach(doc => {
+		querySnapshot.forEach(async doc => {
+
 			queryTodos.push({
 				id: doc.id,
 				text: doc.data().text,
@@ -40,13 +42,35 @@ export const getSingleTodo = async (id, setTodoDetail) => {
 	}
 }
 
+export const getSingleTodoImage = async (id, setImage) => {
+	// get todo img
+	const imgRef = ref(storage, "images");
+	const imgs = await listAll(imgRef);
+	// filter images to get todos img
+	const imgX = imgs.items.find(img => img.name.includes(id))
+	let img = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQErufEdC325ECfUANYh7lzYRbsQxI67-xbjj3kfbovEQ&s" // set default img
 
-export const addTodo = async (text) => {
-	await addDoc(collection(db, todosCollection), {
+	if (imgX) img = await getDownloadURL(imgX)
+
+	setImage(img)
+}
+
+
+export const addTodo = async (text, img) => {
+	const res = await addDoc(collection(db, todosCollection), {
 		text,
 		completed: false,
 		userId: getStoredUser().id
 	});
+	// We add the ? after "res" to check if the request was successful
+	if (res?.id) {
+		const arr = img.name.split(".")
+		const imgName = res.id + "." + arr[arr.length - 1]
+		const imgRef = ref(storage, "/images/" + imgName);
+		uploadBytes(imgRef, img).then((snapshot) => {
+			console.log("image uploaded!", snapshot)
+		});
+	}
 }
 
 export const updateTodo = async (id, text) => {

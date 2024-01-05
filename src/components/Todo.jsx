@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import AppContext from "../contextAPI/AppProvider";
 
 /*
 
@@ -15,6 +16,18 @@ function Todo(props) {
 // eslint-disable-next-line react/prop-types
 function Todo({ todo, handleCompleted, handleEdit, handleDelete }) {
 	const goTo = useNavigate();
+	const { getImg } = useContext(AppContext);
+	const [img, setImg] = useState("");
+
+	useEffect(() => {
+		// eslint-disable-next-line react/prop-types
+		getImg(todo.id, setImg);
+
+		// cleanup
+		// return () => {
+		// 	setImg("");
+		// };
+	}, []);
 
 	const handleView = () => {
 		// eslint-disable-next-line react/prop-types
@@ -25,6 +38,14 @@ function Todo({ todo, handleCompleted, handleEdit, handleDelete }) {
 
 	return (
 		<div className="bg-white p-5 rounded-md flex gap-2 items-center">
+			<img
+				src={
+					img ||
+					"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQErufEdC325ECfUANYh7lzYRbsQxI67-xbjj3kfbovEQ&s"
+				}
+				alt=""
+				className="w-10 h-10 rounded-md"
+			/>
 			<p
 				className={`flex-1 cursor-pointer ${
 					// eslint-disable-next-line react/prop-types
