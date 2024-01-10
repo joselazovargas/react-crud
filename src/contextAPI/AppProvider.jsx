@@ -58,12 +58,13 @@ const AppContextProvider = ({ children }) => {
 				const newTodos = [...todos];
 				const t = newTodos.find((todo) => todo.id === editingId);
 
-				await updateTodo(t.id, text);
+				await updateTodo(t.id, text, img);
 
 				setEditingId(null); // Reset editing index after updating
 			} else {
 				// ADD TODO
-				await addTodo(text, img);
+				if (img) await addTodo(text, img);
+				else alert("Please upload an image");
 			}
 			setText(""); // Clear the input field
 		}
@@ -129,6 +130,7 @@ const AppContextProvider = ({ children }) => {
 				text,
 				todos,
 				todoDetail,
+				editingId,
 				setText,
 				handleAddOrUpdate,
 				handleDelete,

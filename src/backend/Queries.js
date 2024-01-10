@@ -2,7 +2,7 @@ import { addDoc, collection, deleteDoc, doc, onSnapshot, query, serverTimestamp,
 import { auth, db, storage } from "./Firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { getDoc } from 'firebase/firestore';
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { deleteObject, getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 
 const todosCollection = "todos"
 
@@ -64,16 +64,11 @@ export const addTodo = async (text, img) => {
 	});
 	// We add the ? after "res" to check if the request was successful
 	if (res?.id) {
-		const arr = img.name.split(".")
-		const imgName = res.id + "." + arr[arr.length - 1]
-		const imgRef = ref(storage, "/images/" + imgName);
-		uploadBytes(imgRef, img).then((snapshot) => {
-			console.log("image uploaded!", snapshot)
-		});
+		uploadImg(img, res.id)
 	}
 }
 
-export const updateTodo = async (id, text) => {
+export const updateTodo = async (id, text, img) => {
 
 	const docRef = doc(
 		db,
@@ -84,6 +79,29 @@ export const updateTodo = async (id, text) => {
 	// Set the "capital" field of the city 'DC'
 	await updateDoc(docRef, {
 		text
+	});
+
+	if (img) {
+		const imgRef = ref(storage, "images");
+		const imgs = await listAll(imgRef);
+		const imgX = imgs.items.find(img => img.name.includes(id))
+
+		const imgDeleteRef = ref(storage, imgX.fullPath)
+		deleteObject(imgDeleteRef).then(() => {
+			console.log(imgX.fullPath + " deleted!")
+			uploadImg(img, id)
+		}).catch(err => {
+			console.log("err deleting img:", err)
+		})
+	}
+}
+
+function uploadImg(img, id) {
+	const arr = img.name.split(".")
+	const imgName = id + "." + arr[arr.length - 1]
+	const imgRef = ref(storage, "/images/" + imgName);
+	uploadBytes(imgRef, img).then((snapshot) => {
+		console.log(imgName + " uploaded!", snapshot)
 	});
 }
 

@@ -7,7 +7,7 @@ const Todos = () => {
 	const { todos, handleCompleted, handleEdit, handleDelete } =
 		useContext(AppContext);
 	const [t, setT] = useState([]);
-	console.log(todos);
+
 	useEffect(() => {
 		setT(todos);
 	}, [todos]);

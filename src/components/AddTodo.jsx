@@ -1,7 +1,5 @@
 import { useContext, useState } from "react";
 import AppContext from "../contextAPI/AppProvider";
-import { ref, uploadBytes } from "firebase/storage";
-import { storage } from "../backend/Firebase";
 
 // eslint-disable-next-line react/prop-types
 function AddTodo() {
@@ -17,9 +15,7 @@ function AddTodo() {
 	const [imageUpload, setImageUpload] = useState(null);
 
 	const handleAddorUpdateHandler = () => {
-		if (imageUpload) {
-			handleAddOrUpdate(imageUpload);
-		}
+		handleAddOrUpdate(imageUpload);
 	};
 
 	return (
